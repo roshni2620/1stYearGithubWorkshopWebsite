@@ -12,12 +12,16 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: read
+      checks: write
+      statuses: write
       
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Check if PR only adds student files
         id: check-files
@@ -41,14 +45,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Auto-approve and merge PR
+      - name: Auto-merge PR (without approval)
         if: steps.check-files.outputs.valid == 'true'
         run: |
-          # Approve the PR
-          gh pr review ${{ github.event.pull_request.number }} --approve --body "✅ Auto-approved: Student file submission"
-          
-          # Merge the PR
-          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
+          # Skip approval and directly merge the PR
+          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
           
           echo "✅ PR #${{ github.event.pull_request.number }} has been automatically merged!"
         env:
@@ -79,7 +80,6 @@ jobs:
           
           **What happened:**
           - ✅ Your file was validated
-          - ✅ PR was automatically approved
           - ✅ Changes were merged to main branch
           - ✅ Your name is now part of the project!
           
