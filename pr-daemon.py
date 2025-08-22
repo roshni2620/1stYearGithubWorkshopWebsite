@@ -1,11 +1,15 @@
 import requests
 import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Configuration
-GITHUB_USERNAME = "<USERNAME>"
-REPO_NAME = "GitHub-Campus-Club-PSGCT/1stYearGithubWorkshopWebsite" 
-GITHUB_TOKEN = "<PAT_TOKEN>"
-CHECK_INTERVAL = 2  # seconds between checks
+GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
+REPO_NAME = os.getenv("REPO_NAME")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+CHECK_INTERVAL = os.getenv("CHECK_INTERVAL") # seconds between checks
 
 # GitHub API base
 API_URL = f"https://api.github.com/repos/{REPO_NAME}"
