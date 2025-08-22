@@ -1,0 +1,88 @@
+name: Auto-merge Pull Requests
+
+# Trigger on pull request events
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if PR only adds student files
+        id: check-files
+        run: |
+          # Get the list of changed files
+          FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+          echo "Changed files:"
+          echo "$FILES"
+          
+          # Check if all files are in class folders and are student files
+          VALID=true
+          for file in $FILES; do
+            if [[ ! "$file" =~ ^(CSEG1|CSEG2|CSEAIML)/[a-zA-Z0-9]+$ ]]; then
+              echo "Invalid file: $file"
+              VALID=false
+              break
+            fi
+          done
+          
+          echo "valid=$VALID" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-approve and merge PR
+        if: steps.check-files.outputs.valid == 'true'
+        run: |
+          # Approve the PR
+          gh pr review ${{ github.event.pull_request.number }} --approve --body "✅ Auto-approved: Student file submission"
+          
+          # Merge the PR
+          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
+          
+          echo "✅ PR #${{ github.event.pull_request.number }} has been automatically merged!"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on invalid PR
+        if: steps.check-files.outputs.valid == 'false'
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "❌ **Auto-merge failed**
+          
+          This PR contains files that don't match the expected pattern for student submissions.
+          
+          **Expected:**
+          - Files should be in class folders: \`CSEG1\`, \`CSEG2\`, or \`CSEAIML\`
+          - File names should be your roll number (e.g., \`23N206\`)
+          - No other files should be modified
+          
+          Please check the [README.md](../README.md) for proper instructions."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add success comment
+        if: steps.check-files.outputs.valid == 'true'
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "🎉 **Welcome to the workshop!**
+          
+          Your submission has been automatically approved and merged. Great job on completing your first GitHub contribution!
+          
+          **What happened:**
+          - ✅ Your file was validated
+          - ✅ PR was automatically approved
+          - ✅ Changes were merged to main branch
+          - ✅ Your name is now part of the project!
+          
+          Keep up the great work with Git and GitHub! 🚀"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
