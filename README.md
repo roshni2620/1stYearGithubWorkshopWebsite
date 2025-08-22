@@ -1,69 +1,61 @@
-# React + TypeScript + Vite
+# 1st Year GitHub Workshop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the 1st Year GitHub Workshop! This repository is designed to help you learn the basics of Git and GitHub through hands-on practice.
 
-Currently, two official plugins are available:
+## 📁 Class Folders
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Students are organized into the following specialized groups:
 
-## Expanding the ESLint configuration
+- **CSEG1**: Computer Science and Engineering Group 1
+- **CSEG2**: Computer Science and Engineering Group 2  
+- **CSEAIML**: Computer Science and Engineering with AI & ML
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Step 1: Open Codespaces
+- Navigate to this repository on GitHub
+- Click on the green "Code" button
+- Select "Codespaces" and create a new codespace
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Step 2: Create Your File
+- Navigate to your respective class folder (`CSEG1`, `CSEG2`, or `CSEAIML`)
+- Create a new file named with your roll number (e.g., `23N206`)
+- In this file, type your full name
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Step 3: Commit Your Changes
+```bash
+git add .
+git commit -m "Add [Your Name] - [Your Roll Number]"
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Step 4: Push Your Changes
+```bash
+git push -u origin master
 ```
+
+### Step 5: Create a Pull Request
+- Go to your forked repository on GitHub
+- Click "Compare & pull request"
+- Add a descriptive title and description
+- Submit the pull request
+
+## 📝 Example
+
+If your roll number is `23N206` and you belong to `CSEAIML`:
+
+1. Navigate to the `CSEAIML` folder
+2. Create a file named `23N206`
+3. Add your name: `John Doe`
+4. Follow the commit and push steps above
+
+## 🎯 Learning Objectives
+
+By completing this workshop, you will learn:
+- How to use GitHub Codespaces
+- Basic Git commands (`add`, `commit`, `push`)
+- How to create and submit pull requests
+- Collaborative development workflow
+
+---
+
+Happy coding! 🎉
